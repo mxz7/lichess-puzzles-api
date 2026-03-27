@@ -10,7 +10,6 @@ RUN pnpm install --frozen-lockfile
 FROM deps AS build
 COPY tsconfig.json prisma.config.ts ./
 COPY prisma ./prisma
-COPY generated ./generated
 COPY src ./src
 RUN pnpm run build
 RUN pnpm prune --prod
@@ -25,10 +24,9 @@ ENV PORT=3000
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/generated ./generated
 COPY --from=build /app/prisma ./prisma
 
 EXPOSE 3000
 VOLUME ["/app/data"]
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/src/index.js"]
