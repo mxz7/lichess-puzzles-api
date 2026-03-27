@@ -1,20 +1,13 @@
 import { Hono } from "hono";
-import type { Puzzle } from "../generated/prisma/client.js";
-import { Prisma } from "../generated/prisma/client.js";
 import { prisma } from "../init/prisma.js";
+import {
+	difficultyRanges,
+	getRandomPuzzle,
+	getRandomPuzzleByDifficulty,
+	type Difficulty,
+} from "../services/puzzle.js";
 
 const router = new Hono();
-
-const difficultyRanges = {
-	beginner: { min: 0, maxExclusive: 1000 },
-	easy: { min: 1000, maxExclusive: 1300 },
-	medium: { min: 1300, maxExclusive: 1600 },
-	hard: { min: 1600, maxExclusive: 1900 },
-	expert: { min: 1900, maxExclusive: 2499 },
-	grandmaster: { min: 2500, maxExclusive: null },
-} as const;
-
-type Difficulty = keyof typeof difficultyRanges;
 
 router.get("/random/:difficulty", async (c) => {
 	const rawDifficulty = c.req.param("difficulty");
@@ -36,40 +29,26 @@ router.get("/random/:difficulty", async (c) => {
 	}
 
 	const difficulty = difficultyParam as Difficulty;
-	const range = difficultyRanges[difficulty];
+	const puzzle = await getRandomPuzzleByDifficulty(difficulty);
 
-	const whereClause =
-		range.maxExclusive === null
-			? Prisma.sql`WHERE "rating" >= ${range.min}`
-			: Prisma.sql`WHERE "rating" >= ${range.min} AND "rating" < ${range.maxExclusive}`;
-
-	const puzzles: Puzzle[] = await prisma.$queryRaw`
-		SELECT *
-		FROM "Puzzle"
-		${whereClause}
-		ORDER BY RANDOM()
-		LIMIT 1
-	`;
-
-	if (!puzzles || puzzles.length === 0) {
+	if (!puzzle) {
 		return c.json(
 			{ error: `No puzzles found for difficulty '${difficulty}'`, status: 404 },
 			404,
 		);
 	}
 
-	return c.json(puzzles[0]);
+	return c.json(puzzle);
 });
 
 router.get("/random", async (c) => {
-	const puzzles: Puzzle[] =
-		await prisma.$queryRaw`SELECT * FROM "Puzzle" ORDER BY RANDOM() LIMIT 1`;
+	const puzzle = await getRandomPuzzle();
 
-	if (!puzzles || puzzles.length === 0) {
+	if (!puzzle) {
 		return c.json({ error: "No puzzles found", status: 404 }, 404);
 	}
 
-	return c.json(puzzles[0]);
+	return c.json(puzzle);
 });
 
 router.get("/{id}", async (c) => {

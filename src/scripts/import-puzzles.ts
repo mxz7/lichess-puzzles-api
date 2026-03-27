@@ -99,6 +99,7 @@ export async function importPuzzles(): Promise<void> {
 	try {
 		console.log("Clearing existing puzzles...");
 		await prisma.puzzle.deleteMany();
+		await prisma.$queryRaw`DELETE FROM sqlite_sequence WHERE name = 'Puzzle';`;
 
 		for await (const line of rl) {
 			totalLines += 1;
