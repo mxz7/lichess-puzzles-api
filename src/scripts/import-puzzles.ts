@@ -16,12 +16,7 @@ type ParsedPuzzle = {
 	fen: string;
 	moves: string;
 	rating: number;
-	ratingDeviation: number;
-	popularity: number;
-	nbPlays: number;
 	themes: string;
-	gameUrl: string;
-	openingTags: string | null;
 };
 
 function parseCsvLine(line: string): string[] {
@@ -66,9 +61,9 @@ function toInt(raw: string, fieldName: string, lineNumber: number): number {
 }
 
 function toPuzzle(columns: string[], lineNumber: number): ParsedPuzzle {
-	if (columns.length !== 10) {
+	if (columns.length < 8) {
 		throw new Error(
-			`Expected 10 columns at line ${lineNumber}, got ${columns.length}`,
+			`Expected at least 8 columns at line ${lineNumber}, got ${columns.length}`,
 		);
 	}
 
@@ -77,12 +72,7 @@ function toPuzzle(columns: string[], lineNumber: number): ParsedPuzzle {
 		fen: columns[1],
 		moves: columns[2],
 		rating: toInt(columns[3], "rating", lineNumber),
-		ratingDeviation: toInt(columns[4], "ratingDeviation", lineNumber),
-		popularity: toInt(columns[5], "popularity", lineNumber),
-		nbPlays: toInt(columns[6], "nbPlays", lineNumber),
 		themes: columns[7],
-		gameUrl: columns[8],
-		openingTags: columns[9] === "" ? null : columns[9],
 	};
 }
 
