@@ -1,42 +1,50 @@
-# syntax=docker/dockerfile:1.7
+# syntax = docker/dockerfile:1
 
-FROM node:24-slim AS deps
+FROM node:24-slim as base
+
+# SvelteKit/Prisma app lives here
 WORKDIR /app
-RUN corepack enable
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
+# Install pnpm
+RUN npm install -g pnpm
 
-FROM deps AS build
+# Throw-away build stage to reduce size of final image
+FROM base as build
 
+# Install packages needed to build node modules
 RUN apt update -qq && \
     apt install --no-install-recommends -y build-essential node-gyp openssl pkg-config python-is-python3
 
-COPY tsconfig.json prisma.config.ts ./
-COPY prisma ./prisma
-COPY src ./src
+# Copy needed things over
+COPY --link package.json pnpm-lock.yaml ./
+COPY --link prisma ./prisma
+COPY --link . .
+
+RUN pnpm install --frozen-lockfile --prod=false
+
 RUN npx prisma generate
+
 RUN pnpm run build
 RUN pnpm prune --prod
 
-FROM node:24-slim AS runtime
+# Final stage for app image
+FROM base
 
+# # # Install packages needed for deployment
 RUN apt update -qq && \
     apt install --no-install-recommends -y openssl && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-WORKDIR /app
-RUN corepack enable && mkdir -p /app/data
+# Copy built application
+COPY --from=build /app/build /app/build
+COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/package.json /app/package.json
+COPY --from=build /app/prisma.config.ts /app/prisma.config.ts
 
-ENV NODE_ENV=production
-ENV PORT=3000
+# Set production environment
+ENV NODE_ENV="production"
+ENV ADDRESS_HEADER="cf-connecting-ip"
 
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/prisma ./prisma
-
+# Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-VOLUME ["/app/data"]
-
-CMD [ "pnpm", "start:docker" ]
+CMD [ "pnpm", "start:docker"]
