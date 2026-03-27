@@ -6,11 +6,12 @@ import { prisma } from "../init/prisma.js";
 const router = new Hono();
 
 const difficultyRanges = {
-	beginner: { min: 0, maxExclusive: 1200 },
-	easy: { min: 1200, maxExclusive: 1500 },
-	medium: { min: 1500, maxExclusive: 1800 },
-	hard: { min: 1800, maxExclusive: 2100 },
-	expert: { min: 2100, maxExclusive: null },
+	beginner: { min: 0, maxExclusive: 1000 },
+	easy: { min: 1000, maxExclusive: 1300 },
+	medium: { min: 1300, maxExclusive: 1600 },
+	hard: { min: 1600, maxExclusive: 1900 },
+	expert: { min: 1900, maxExclusive: 2499 },
+	grandmaster: { min: 2500, maxExclusive: null },
 } as const;
 
 type Difficulty = keyof typeof difficultyRanges;
@@ -27,7 +28,7 @@ router.get("/random/:difficulty", async (c) => {
 		return c.json(
 			{
 				error:
-					"Invalid difficulty. Use one of: beginner, easy, medium, hard, expert",
+					"Invalid difficulty. Use one of: beginner, easy, medium, hard, expert, grandmaster",
 				status: 400,
 			},
 			400,
