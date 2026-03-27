@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-FROM node:24slim AS deps
+FROM node:24-slim AS deps
 WORKDIR /app
 RUN corepack enable
 
@@ -15,7 +15,7 @@ COPY src ./src
 RUN pnpm run build
 RUN pnpm prune --prod
 
-FROM node:24slim AS runtime
+FROM node:24-slim AS runtime
 WORKDIR /app
 RUN corepack enable && mkdir -p /app/data
 
