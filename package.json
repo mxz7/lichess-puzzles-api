@@ -5,7 +5,8 @@
 		"dev": "tsx watch src/index.ts",
 		"build": "tsc",
 		"start": "node dist/src/index.js",
-		"import:puzzles": "tsx src/scripts/import-puzzles.ts"
+		"import:puzzles": "tsx src/scripts/import-puzzles.ts",
+		"start:docker": "prisma migrate deploy && node dist/src/index.js"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.19.11",
@@ -13,12 +14,12 @@
 		"@prisma/client": "^7.6.0",
 		"dotenv": "^17.3.1",
 		"hono": "^4.12.9",
-		"hono-pino": "^0.10.3"
+		"hono-pino": "^0.10.3",
+		"prisma": "^7.6.0"
 	},
 	"devDependencies": {
 		"@types/better-sqlite3": "^7.6.13",
 		"@types/node": "^20.11.17",
-		"prisma": "^7.6.0",
 		"tsx": "^4.7.1",
 		"typescript": "^5.8.3"
 	}
