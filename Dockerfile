@@ -20,6 +20,11 @@ RUN pnpm run build
 RUN pnpm prune --prod
 
 FROM node:24-slim AS runtime
+
+RUN apt update -qq && \
+    apt install --no-install-recommends -y openssl && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
 WORKDIR /app
 RUN corepack enable && mkdir -p /app/data
 
