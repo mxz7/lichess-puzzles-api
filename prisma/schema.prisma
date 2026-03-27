@@ -13,16 +13,11 @@ datasource db {
 }
 
 model Puzzle {
-  puzzleId        String  @id
-  fen             String
-  moves           String
-  rating          Int
-  ratingDeviation Int
-  popularity      Int
-  nbPlays         Int
-  themes          String
-  gameUrl         String
-  openingTags     String?
+  puzzleId String @id
+  fen      String
+  moves    String
+  rating   Int
+  themes   String
 
   @@index([rating])
 }
