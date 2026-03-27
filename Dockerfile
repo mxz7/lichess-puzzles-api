@@ -8,6 +8,10 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 FROM deps AS build
+
+RUN apt update -qq && \
+    apt install --no-install-recommends -y build-essential node-gyp openssl pkg-config python-is-python3
+
 COPY tsconfig.json prisma.config.ts ./
 COPY prisma ./prisma
 COPY src ./src
