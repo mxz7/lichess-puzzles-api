@@ -11,6 +11,7 @@ FROM deps AS build
 COPY tsconfig.json prisma.config.ts ./
 COPY prisma ./prisma
 COPY src ./src
+RUN npx prisma generate
 RUN pnpm run build
 RUN pnpm prune --prod
 
