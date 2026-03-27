@@ -4,7 +4,10 @@ import readline from "node:readline";
 import { fileURLToPath } from "node:url";
 import { prisma } from "../init/prisma.js";
 
-const CSV_PATH = resolve(process.cwd(), "lichess_db_puzzle.csv");
+const CSV_PATH = resolve(
+	process.cwd(),
+	process.env.PUZZLE_DB_PATH ?? "lichess_db_puzzle.csv",
+);
 const IMPORT_MAX_ROWS = Number.parseInt(process.env.IMPORT_MAX_ROWS ?? "", 10);
 const INSERT_BATCH_SIZE = 1000;
 
