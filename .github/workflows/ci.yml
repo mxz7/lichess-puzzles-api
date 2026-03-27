@@ -93,4 +93,4 @@ jobs:
           username: dokku
           port: 22
           key: ${{ secrets.PRIV_KEY }}
-          script: git:from-image lichess-puzzles ${{ env.IMAGE_TAG }}
+          script: git:from-image lichess-puzzles-api ${{ env.IMAGE_TAG }}
