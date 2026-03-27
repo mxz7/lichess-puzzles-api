@@ -1,0 +1,10 @@
+node_modules
+dist
+out
+.git
+.gitignore
+.DS_Store
+.env
+dev.db-journal
+lichess_db_puzzle.csv
+pnpm-debug.log*
