@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@hono/node-server':
         specifier: ^1.19.11
-        version: 1.19.11(hono@4.12.9)
+        version: 1.19.11(hono@4.12.12)
       '@prisma/adapter-better-sqlite3':
         specifier: ^7.6.0
         version: 7.6.0
@@ -21,11 +21,11 @@ importers:
         specifier: ^17.3.1
         version: 17.3.1
       hono:
-        specifier: ^4.12.9
-        version: 4.12.9
+        specifier: ^4.12.12
+        version: 4.12.12
       hono-pino:
         specifier: ^0.10.3
-        version: 0.10.3(hono@4.12.9)(pino@10.3.1)
+        version: 0.10.3(hono@4.12.12)(pino@10.3.1)
       pino:
         specifier: ^10.3.1
         version: 10.3.1
@@ -575,8 +575,8 @@ packages:
       hono: '>=4.0.0'
       pino: '>=7.1.0'
 
-  hono@4.12.9:
-    resolution: {integrity: sha512-wy3T8Zm2bsEvxKZM5w21VdHDDcwVS1yUFFY6i8UobSsKfFceT7TOwhbhfKsDyx7tYQlmRM5FLpIuYvNFyjctiA==}
+  hono@4.12.12:
+    resolution: {integrity: sha512-p1JfQMKaceuCbpJKAPKVqyqviZdS0eUxH9v82oWo1kb9xjQ5wA6iP3FNVAPDFlz5/p7d45lO+BpSk1tuSZMF4Q==}
     engines: {node: '>=16.9.0'}
 
   http-status-codes@2.3.0:
@@ -989,9 +989,9 @@ snapshots:
   '@esbuild/win32-x64@0.27.4':
     optional: true
 
-  '@hono/node-server@1.19.11(hono@4.12.9)':
+  '@hono/node-server@1.19.11(hono@4.12.12)':
     dependencies:
-      hono: 4.12.9
+      hono: 4.12.12
 
   '@kurkle/color@0.3.4': {}
 
@@ -1029,13 +1029,13 @@ snapshots:
       '@electric-sql/pglite': 0.4.1
       '@electric-sql/pglite-socket': 0.1.1(@electric-sql/pglite@0.4.1)
       '@electric-sql/pglite-tools': 0.3.1(@electric-sql/pglite@0.4.1)
-      '@hono/node-server': 1.19.11(hono@4.12.9)
+      '@hono/node-server': 1.19.11(hono@4.12.12)
       '@prisma/get-platform': 7.2.0
       '@prisma/query-plan-executor': 7.2.0
       '@prisma/streams-local': 0.1.2
       foreground-child: 3.3.1
       get-port-please: 3.2.0
-      hono: 4.12.9
+      hono: 4.12.12
       http-status-codes: 2.3.0
       pathe: 2.0.3
       proper-lockfile: 4.1.2
@@ -1353,13 +1353,13 @@ snapshots:
 
   graphmatch@1.1.1: {}
 
-  hono-pino@0.10.3(hono@4.12.9)(pino@10.3.1):
+  hono-pino@0.10.3(hono@4.12.12)(pino@10.3.1):
     dependencies:
       defu: 6.1.4
-      hono: 4.12.9
+      hono: 4.12.12
       pino: 10.3.1
 
-  hono@4.12.9: {}
+  hono@4.12.12: {}
 
   http-status-codes@2.3.0: {}
 
