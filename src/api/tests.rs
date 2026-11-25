@@ -13,7 +13,7 @@ async fn preserves_legacy_puzzle_routes_and_difficulty_boundaries() -> anyhow::R
     crate::db::migrate(&pool).await?;
     let state = AppState::new(pool.clone());
     assert_eq!(state.puzzle_count().await?, 0);
-    sqlx::query(
+    sqlx::query!(
         r#"INSERT INTO "Puzzle" ("puzzleId", "fen", "moves", "rating", "themes")
            VALUES ('gap', 'fen', 'moves', 2499, 'themes'),
                   ('top', 'fen', 'moves', 2500, 'themes')"#,
@@ -50,7 +50,7 @@ async fn preserves_legacy_puzzle_routes_and_difficulty_boundaries() -> anyhow::R
         }
     }
 
-    sqlx::query(r#"DELETE FROM "Puzzle""#)
+    sqlx::query!(r#"DELETE FROM "Puzzle""#)
         .execute(&pool)
         .await?;
     assert_eq!(state.puzzle_count().await?, 2);

@@ -1,11 +1,10 @@
 use serde::Serialize;
 use sqlx::{QueryBuilder, Sqlite, SqliteExecutor};
 
-#[derive(Serialize, sqlx::FromRow)]
+#[derive(Serialize)]
 pub struct Puzzle {
     id: i64,
     #[serde(rename = "puzzleId")]
-    #[sqlx(rename = "puzzleId")]
     puzzle_id: String,
     fen: String,
     moves: String,
@@ -22,7 +21,7 @@ pub(crate) struct NewPuzzle {
 }
 
 pub(crate) async fn count<'e>(executor: impl SqliteExecutor<'e>) -> sqlx::Result<i64> {
-    sqlx::query_scalar(r#"SELECT COUNT(*) FROM "Puzzle""#)
+    sqlx::query_scalar!(r#"SELECT COUNT(*) AS "count!: i64" FROM "Puzzle""#)
         .fetch_one(executor)
         .await
 }
@@ -31,10 +30,14 @@ pub(crate) async fn find_by_id<'e>(
     executor: impl SqliteExecutor<'e>,
     id: i64,
 ) -> sqlx::Result<Option<Puzzle>> {
-    sqlx::query_as(r#"SELECT * FROM "Puzzle" WHERE "id" = ?"#)
-        .bind(id)
-        .fetch_optional(executor)
-        .await
+    sqlx::query_as!(
+        Puzzle,
+        r#"SELECT "id", "puzzleId" AS puzzle_id, "fen", "moves", "rating", "themes"
+           FROM "Puzzle" WHERE "id" = ?"#,
+        id,
+    )
+    .fetch_optional(executor)
+    .await
 }
 
 pub(crate) async fn random_in_range<'e>(
@@ -42,24 +45,33 @@ pub(crate) async fn random_in_range<'e>(
     min: i32,
     max: Option<i32>,
 ) -> sqlx::Result<Option<Puzzle>> {
-    let query = match max {
-        Some(max) => sqlx::query_as(
-            r#"SELECT * FROM "Puzzle" WHERE "rating" >= ? AND "rating" < ?
-               ORDER BY RANDOM() LIMIT 1"#,
-        )
-        .bind(min)
-        .bind(max),
-        None => sqlx::query_as(
-            r#"SELECT * FROM "Puzzle" WHERE "rating" >= ? ORDER BY RANDOM() LIMIT 1"#,
-        )
-        .bind(min),
-    };
-
-    query.fetch_optional(executor).await
+    match max {
+        Some(max) => {
+            sqlx::query_as!(
+                Puzzle,
+                r#"SELECT "id", "puzzleId" AS puzzle_id, "fen", "moves", "rating", "themes"
+               FROM "Puzzle" WHERE "rating" >= ? AND "rating" < ? ORDER BY RANDOM() LIMIT 1"#,
+                min,
+                max,
+            )
+            .fetch_optional(executor)
+            .await
+        }
+        None => {
+            sqlx::query_as!(
+                Puzzle,
+                r#"SELECT "id", "puzzleId" AS puzzle_id, "fen", "moves", "rating", "themes"
+               FROM "Puzzle" WHERE "rating" >= ? ORDER BY RANDOM() LIMIT 1"#,
+                min,
+            )
+            .fetch_optional(executor)
+            .await
+        }
+    }
 }
 
 pub(crate) async fn has_puzzles<'e>(executor: impl SqliteExecutor<'e>) -> sqlx::Result<bool> {
-    sqlx::query_scalar(r#"SELECT EXISTS (SELECT 1 FROM "Puzzle")"#)
+    sqlx::query_scalar!(r#"SELECT EXISTS (SELECT 1 FROM "Puzzle") AS "exists!: bool""#)
         .fetch_one(executor)
         .await
 }

@@ -3,6 +3,8 @@
 FROM rust:1.100.0-bookworm AS build
 WORKDIR /app
 COPY Cargo.toml Cargo.lock build.rs ./
+COPY .cargo/config.toml ./.cargo/config.toml
+COPY .sqlx/ ./.sqlx/
 COPY src/ ./src/
 RUN cargo build --release --locked
 

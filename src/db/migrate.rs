@@ -8,9 +8,10 @@ pub(crate) async fn migrate(pool: &SqlitePool) -> Result<()> {
     // SQLite's SQLx migrator has no advisory lock. Reserve the write lock before reading history.
     let mut transaction = pool.begin_with("BEGIN IMMEDIATE").await?;
 
-    let adopt_prisma: bool = sqlx::query_scalar(
-        "SELECT EXISTS (SELECT 1 FROM sqlite_schema WHERE type = 'table' AND name = '_prisma_migrations')
-         AND NOT EXISTS (SELECT 1 FROM sqlite_schema WHERE type = 'table' AND name = '_sqlx_migrations')",
+    let adopt_prisma = sqlx::query_scalar!(
+        r#"SELECT (EXISTS (SELECT 1 FROM sqlite_schema WHERE type = 'table' AND name = '_prisma_migrations')
+            AND NOT EXISTS (SELECT 1 FROM sqlite_schema WHERE type = 'table' AND name = '_sqlx_migrations'))
+            AS "adopt!: bool""#,
     )
     .fetch_one(&mut *transaction)
     .await?;

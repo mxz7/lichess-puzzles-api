@@ -1,0 +1,21 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT (EXISTS (SELECT 1 FROM sqlite_schema WHERE type = 'table' AND name = '_prisma_migrations')\n            AND NOT EXISTS (SELECT 1 FROM sqlite_schema WHERE type = 'table' AND name = '_sqlx_migrations'))\n            AS \"adopt!: bool\"",
+  "describe": {
+    "columns": [
+      {
+        "name": "adopt!: bool",
+        "ordinal": 0,
+        "type_info": "Integer",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "989c34cf3152578bb04be9cae70c39aca9de24c2f59e55ec3f8c59c3119c603f"
+}

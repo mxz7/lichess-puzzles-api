@@ -1,0 +1,86 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT \"id\", \"puzzleId\" AS puzzle_id, \"fen\", \"moves\", \"rating\", \"themes\"\n               FROM \"Puzzle\" WHERE \"rating\" >= ? ORDER BY RANDOM() LIMIT 1",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "Puzzle",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "puzzle_id",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "Puzzle",
+            "name": "puzzleId"
+          }
+        }
+      },
+      {
+        "name": "fen",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "Puzzle",
+            "name": "fen"
+          }
+        }
+      },
+      {
+        "name": "moves",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "Puzzle",
+            "name": "moves"
+          }
+        }
+      },
+      {
+        "name": "rating",
+        "ordinal": 4,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "Puzzle",
+            "name": "rating"
+          }
+        }
+      },
+      {
+        "name": "themes",
+        "ordinal": 5,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "Puzzle",
+            "name": "themes"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "2ef927d3c9ccc1c80eb1a23a4c829209310a93318000402961fd6797060eaea0"
+}

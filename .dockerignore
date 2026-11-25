@@ -2,6 +2,10 @@
 !Cargo.toml
 !Cargo.lock
 !build.rs
+!.cargo/
+!.cargo/config.toml
+!.sqlx/
+!.sqlx/*.json
 !src/
 !src/**
 src/generated/

@@ -30,6 +30,14 @@ atlas migrate validate --env local
 
 Atlas writes versioned SQL and the checksum to [`src/db/migrations/`](src/db/migrations/). CI checks that replaying those migrations produces the declared schema.
 
+After changing a checked SQLx query or its schema, regenerate the committed `.sqlx/` metadata with the [SQLx CLI](https://github.com/transact-rs/sqlx/blob/main/sqlx-cli/README.md) against a scratch database:
+
+```sh
+sqlx_tmp=$(mktemp -d)
+sqlite3 "$sqlx_tmp/schema.db" < src/db/schema.sql
+cargo sqlx prepare --database-url "sqlite://$sqlx_tmp/schema.db" -- --all-targets
+```
+
 Startup imports the CSV when the puzzle table is empty. To replace its contents manually, run:
 
 ```sh
