@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO \"Puzzle\" (\"puzzleId\", \"fen\", \"moves\", \"rating\", \"themes\")\n           VALUES ('gap', 'fen', 'moves', 2499, 'themes'),\n                  ('top', 'fen', 'moves', 2500, 'themes')",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": []
+  },
+  "hash": "ec411666dad488b894b87d2fa48035a77801cc98f18c6aeee430381b742b1123"
+}

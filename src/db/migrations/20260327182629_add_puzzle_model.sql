@@ -1,4 +1,3 @@
--- CreateTable
 CREATE TABLE "Puzzle" (
     "puzzleId" TEXT NOT NULL PRIMARY KEY,
     "fen" TEXT NOT NULL,
@@ -12,5 +11,4 @@ CREATE TABLE "Puzzle" (
     "openingTags" TEXT
 );
 
--- CreateIndex
 CREATE INDEX "Puzzle_rating_idx" ON "Puzzle"("rating");

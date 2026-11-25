@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM \"Puzzle\"",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": []
+  },
+  "hash": "577fcfb57a1ef51772b5862b82fef59baa22aacaf921cb8785a6a1bd2b97cf9c"
+}
