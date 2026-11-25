@@ -35,8 +35,10 @@ After changing a checked SQLx query or its schema, regenerate the committed `.sq
 ```sh
 sqlx_tmp=$(mktemp -d)
 sqlite3 "$sqlx_tmp/schema.db" < src/db/schema.sql
-cargo sqlx prepare --database-url "sqlite://$sqlx_tmp/schema.db" -- --all-targets
+SQLX_DATABASE_URL="sqlite://$sqlx_tmp/schema.db" cargo sqlx prepare -- --all-targets --locked
 ```
+
+The app reads `DATABASE_URL` at runtime. SQLx uses `SQLX_DATABASE_URL` for online query checks, while normal builds and editor analysis use the offline metadata.
 
 Startup imports the CSV when the puzzle table is empty. To replace its contents manually, run:
 

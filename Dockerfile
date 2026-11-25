@@ -2,7 +2,7 @@
 
 FROM rust:1.100.0-bookworm AS build
 WORKDIR /app
-COPY Cargo.toml Cargo.lock build.rs ./
+COPY Cargo.toml Cargo.lock build.rs sqlx.toml ./
 COPY .cargo/config.toml ./.cargo/config.toml
 COPY .sqlx/ ./.sqlx/
 COPY src/ ./src/
