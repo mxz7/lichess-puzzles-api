@@ -9,7 +9,7 @@
 		"start:docker": "prisma migrate deploy && node dist/index.js"
 	},
 	"dependencies": {
-		"@hono/node-server": "^1.19.11",
+		"@hono/node-server": "^1.19.13",
 		"@prisma/adapter-better-sqlite3": "^7.6.0",
 		"@prisma/client": "^7.6.0",
 		"dotenv": "^17.3.1",
