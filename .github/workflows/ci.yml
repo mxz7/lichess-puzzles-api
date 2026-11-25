@@ -22,28 +22,36 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v6
 
-      - name: install pnpm
-        uses: pnpm/action-setup@v5
+      - name: install Rust
+        run: |
+          rustup toolchain install stable --profile minimal --component rustfmt --component clippy
+          rustup default stable
+
+      - name: check formatting
+        run: cargo fmt --check
+
+      - name: lint Rust
+        run: cargo clippy --locked --all-targets -- -D warnings
+
+      - name: run Rust tests
+        run: cargo test --locked
+
+      - name: install Atlas
+        uses: ariga/setup-atlas@v0
         with:
-          version: latest
+          version: v1.4.0
 
-      - name: use node.js 24
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          cache: pnpm
+      - name: validate SQLite migrations
+        run: atlas migrate validate --env local
 
-      - name: install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: generate prisma client
-        run: npx prisma generate
-
-      # - name: check formatting
-      #   run: pnpm format --check
-
-      # - name: run pnpm check
-      #   run: pnpm run check
+      - name: check Atlas schema matches migrations
+        run: |
+          diff="$(atlas schema diff --env local --from env://migration.dir --to env://schema.src --format '{{ sql . }}')"
+          if [ -n "$diff" ]; then
+            echo "The Atlas schema and migrations differ."
+            printf '%s\n' "$diff"
+            exit 1
+          fi
 
   build:
     needs: checks
