@@ -38,7 +38,7 @@ sqlite3 "$sqlx_tmp/schema.db" < src/db/schema.sql
 SQLX_DATABASE_URL="sqlite://$sqlx_tmp/schema.db" cargo sqlx prepare -- --all-targets --locked
 ```
 
-The app reads `DATABASE_URL` at runtime. SQLx uses `SQLX_DATABASE_URL` for online query checks, while normal builds and editor analysis use the offline metadata.
+The app reads `DATABASE_URL` at runtime. Set `SQLX_DATABASE_URL` for live local query checks. Docker and CI force offline metadata only for build commands.
 
 Startup imports the CSV when the puzzle table is empty. To replace its contents manually, run:
 

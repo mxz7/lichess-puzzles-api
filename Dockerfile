@@ -3,10 +3,9 @@
 FROM rust:1.100.0-bookworm AS build
 WORKDIR /app
 COPY Cargo.toml Cargo.lock build.rs sqlx.toml ./
-COPY .cargo/config.toml ./.cargo/config.toml
 COPY .sqlx/ ./.sqlx/
 COPY src/ ./src/
-RUN cargo build --release --locked
+RUN SQLX_OFFLINE=true cargo build --release --locked
 
 FROM debian:bookworm-slim
 WORKDIR /app

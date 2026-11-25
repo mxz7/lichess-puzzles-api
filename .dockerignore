@@ -3,8 +3,6 @@
 !Cargo.lock
 !build.rs
 !sqlx.toml
-!.cargo/
-!.cargo/config.toml
 !.sqlx/
 !.sqlx/*.json
 !src/
