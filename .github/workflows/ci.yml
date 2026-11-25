@@ -36,6 +36,15 @@ jobs:
       - name: run Rust tests
         run: cargo test --locked
 
+      - name: install SQLx CLI
+        run: cargo install sqlx-cli --version 0.9.0 --debug --locked --no-default-features --features sqlite,sqlx-toml
+
+      - name: check SQLx query metadata
+        run: |
+          sqlx_tmp="$(mktemp -d "$RUNNER_TEMP/sqlx-check.XXXXXX")"
+          DATABASE_URL="file:$sqlx_tmp/schema.db" cargo run --locked -- migrate
+          SQLX_DATABASE_URL="sqlite://$sqlx_tmp/schema.db" cargo sqlx prepare --check -- --all-targets --locked
+
       - name: install Atlas
         uses: ariga/setup-atlas@v0
         with:
